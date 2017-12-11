@@ -21,6 +21,10 @@
 import fpversion
 import os
 
+#TEST: i18n makefile
+#test_string1=_("teststring1")
+#test_string2=_("teststring2")
+
 ## Some repeated strings
 please_use_arg = _("Please use a number for argument {}")
 

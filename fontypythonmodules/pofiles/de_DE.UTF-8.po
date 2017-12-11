@@ -1,14 +1,14 @@
-# This is the original ref.pot file for fontypython. Please don't damage it.
+# This is the German translation of Fontypython.
 # Copyright (C) YEAR Copyright (C) 2006,2007,2008,2017 Donn.C.Ingle
 # This file is distributed under the same license as the fontypython package.
 # Donn Ingle <donn.ingle@gmail.com>, 2017.
-# Test string - it should remain in this file
+# Michael Hoeft <>, 2017.
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: fontypython\n"
 "Report-Msgid-Bugs-To: donn.ingle@gmail.com\n"
-"POT-Creation-Date: 2017-12-10 17:10+0200\n"
+"POT-Creation-Date: 2017-12-11 13:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -132,7 +132,7 @@ msgstr ""
 
 #: fontypythonmodules/clifuncs.py:177 fontypythonmodules/fpsys.py:987
 msgid "Installing \"{}\"."
-msgstr ""
+msgstr "Installiere \"{}\""
 
 #: fontypythonmodules/clifuncs.py:205
 msgid "Removing \"{}\"."
@@ -446,7 +446,7 @@ msgstr ""
 
 #: fontypythonmodules/gui_FontView.py:505
 msgid "There's nothing much to do."
-msgstr ""
+msgstr "Nichts zu tun"
 
 #: fontypythonmodules/gui_FontView.py:506
 msgid "Choose some fonts"
@@ -581,7 +581,7 @@ msgstr ""
 
 #: fontypythonmodules/gui_PogTargets.py:86
 msgid "Install Pog(s)"
-msgstr ""
+msgstr "Installiere Pog"
 
 #: fontypythonmodules/gui_PogTargets.py:87
 msgid ""
@@ -666,7 +666,7 @@ msgstr ""
 
 #: fontypythonmodules/gui_dismissable_panels.py:311
 msgid "About Fonty"
-msgstr ""
+msgstr "Über Fonty"
 
 #: fontypythonmodules/gui_dismissable_panels.py:359
 msgid "Hushing is on."
@@ -742,11 +742,11 @@ msgstr ""
 
 #: fontypythonmodules/gui_dismissable_panels.py:724
 msgid "Settings"
-msgstr ""
+msgstr "Optionen"
 
 #: fontypythonmodules/gui_dismissable_panels.py:738
 msgid "Sample text:"
-msgstr ""
+msgstr "Beispieltext:"
 
 #: fontypythonmodules/gui_dismissable_panels.py:745
 msgid "Point size:"
@@ -866,23 +866,31 @@ msgstr ""
 msgid "You can get help by opening a ticket on:"
 msgstr ""
 
+#: fontypythonmodules/strings.py:24
+msgid "teststring1"
+msgstr ""
+
 #: fontypythonmodules/strings.py:25
+msgid "teststring2"
+msgstr ""
+
+#: fontypythonmodules/strings.py:28
 msgid "Please use a number for argument {}"
 msgstr ""
 
-#: fontypythonmodules/strings.py:31
+#: fontypythonmodules/strings.py:34
 msgid "Your arguments amuse me :) Please see the help by using -h"
 msgstr ""
 
-#: fontypythonmodules/strings.py:34
+#: fontypythonmodules/strings.py:37
 msgid "Fonty Python version {}"
 msgstr ""
 
-#: fontypythonmodules/strings.py:42
+#: fontypythonmodules/strings.py:45
 msgid "Fonts supported: TTF, OTF, TTC, WOFF, Type1 (PFB, PFA)."
 msgstr ""
 
-#: fontypythonmodules/strings.py:44
+#: fontypythonmodules/strings.py:47
 msgid ""
 "The basic format is:\n"
 "{} [OPTIONS] || [VIEW] [TARGET]\n"
@@ -905,7 +913,7 @@ msgid ""
 "NB: Try not to use spaces in Pog names. If you must, then \"quote the name\"."
 msgstr ""
 
-#: fontypythonmodules/strings.py:65
+#: fontypythonmodules/strings.py:68
 msgid ""
 "Manage your fonts on GNU/Linux\n"
 "==============================\n"
@@ -933,7 +941,7 @@ msgid ""
 "to install them."
 msgstr ""
 
-#: fontypythonmodules/strings.py:90
+#: fontypythonmodules/strings.py:93
 #, python-brace-format
 msgid ""
 "{yadda}\n"
@@ -944,7 +952,7 @@ msgid ""
 "{basic_idea}"
 msgstr ""
 
-#: fontypythonmodules/strings.py:102
+#: fontypythonmodules/strings.py:105
 msgid ""
 "Options:\n"
 "\n"
@@ -1008,7 +1016,7 @@ msgid ""
 "                "
 msgstr ""
 
-#: fontypythonmodules/strings.py:157
+#: fontypythonmodules/strings.py:160
 #, python-brace-format
 msgid ""
 "{yadda}\n"
@@ -1083,17 +1091,17 @@ msgid ""
 "\n"
 msgstr ""
 
-#: fontypythonmodules/strings.py:218
+#: fontypythonmodules/strings.py:221
 msgid ""
 "Your fontypython folder is:\n"
 "{}"
 msgstr ""
 
-#: fontypythonmodules/strings.py:222
+#: fontypythonmodules/strings.py:225
 msgid "Fonty Python - view and manage fonts on Gnu/Linux."
 msgstr ""
 
-#: fontypythonmodules/strings.py:223
+#: fontypythonmodules/strings.py:226
 #, python-brace-format
 msgid ""
 "{basic_idea}\n"
@@ -1105,7 +1113,7 @@ msgid ""
 "{contact}"
 msgstr ""
 
-#: fontypythonmodules/strings.py:238
+#: fontypythonmodules/strings.py:241
 #, python-brace-format
 msgid ""
 "I cannot find \"python-wxversion\"\n"
@@ -1129,7 +1137,7 @@ msgid ""
 "http://wxpython.org/download.php\n"
 msgstr ""
 
-#: fontypythonmodules/strings.py:260
+#: fontypythonmodules/strings.py:263
 #, python-brace-format
 msgid ""
 "I cannot find \"python-wxgtkX.Y\"\n"
@@ -1153,7 +1161,7 @@ msgid ""
 "http://wxpython.org/download.php\n"
 msgstr ""
 
-#: fontypythonmodules/strings.py:282
+#: fontypythonmodules/strings.py:285
 msgid ""
 "I cannot find \"python-pil\"\n"
 "Please install this package.\n"
@@ -1179,7 +1187,7 @@ msgid ""
 "http://www.pythonware.com/products/pil/index.htm\n"
 msgstr ""
 
-#: fontypythonmodules/strings.py:307
+#: fontypythonmodules/strings.py:310
 msgid ""
 "I cannot find \"Python-gi\"\n"
 "This package is not required; although if you\n"
@@ -1191,24 +1199,24 @@ msgid ""
 "Look for \"python-gi\" in your package manager.\n"
 msgstr ""
 
-#: fontypythonmodules/strings.py:335
+#: fontypythonmodules/strings.py:338
 msgid ""
 "Hold SHIFT or CTRL as you select Pogs, if you wish to select many at once."
 msgstr ""
 
-#: fontypythonmodules/strings.py:339
+#: fontypythonmodules/strings.py:342
 msgid "Can't hush because:"
 msgstr ""
 
-#: fontypythonmodules/strings.py:340
+#: fontypythonmodules/strings.py:343
 msgid "Can't unhush because:"
 msgstr ""
 
-#: fontypythonmodules/strings.py:341
+#: fontypythonmodules/strings.py:344
 msgid "See --help hush"
 msgstr ""
 
-#: fontypythonmodules/strings.py:342
+#: fontypythonmodules/strings.py:345
 #, python-brace-format
 msgid ""
 "\n"
@@ -1785,14 +1793,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "License"
 #~ msgstr "Lizenz"
-
-#, fuzzy
-#~ msgid "Sample text"
-#~ msgstr "Beispieltext:"
-
-#, fuzzy
-#~ msgid "Thin"
-#~ msgstr "Danke"
 
 #, fuzzy
 #~ msgid "Modern"

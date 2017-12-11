@@ -15,8 +15,8 @@ Don't damage or lose this file. (Well, I can always make a new one.)
 UPDATE
 ======
 Scratch that. I can't get the headers to survive properly. Fuck it.
-I write a date and the version in the Makefile, but the comments at
-the top are just gonna be default crap. Forever.
+I write a date and the version in the Makefile, but the metadata
+is ignored and is just gonna be default crap. Forever.
 
 See the Makefile for the actual steps.
 
@@ -35,6 +35,16 @@ When you are ready for a release:
 1. make
 2. make update
 3. make mos
+
+
+
+
+
+From the manual
+===============
+msgmerge [option] def.po ref.pot
+
+The msgmerge program merges two Uniforum style .po files together. The def.po file is an existing PO file with translations which will be taken over to the newly created file as long as they still match; comments will be preserved, but extracted comments and file positions will be discarded. The ref.pot file is the last created PO file with up-to-date source references but old translations, or a PO Template file (generally created by xgettext); any translations or comments in the file will be discarded, however dot comments and file positions will be preserved. Where an exact match cannot be found, fuzzy matching is used to produce better results. 
 
 
 
@@ -73,3 +83,4 @@ Now I have B.pot that carries the headers etc. Phew.
 
 Now I can go merge the fr_FR.UTF-8.po file with B.pot
 
+(Update - Actually, this doesn't work either.)
