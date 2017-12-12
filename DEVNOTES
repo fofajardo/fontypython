@@ -94,6 +94,7 @@ Done * Don't forget to remove the wx debug stuff on the app object
 
 * Change all the strings to use {} and params
 
+* Remove a font from a Pog - the fontview loses its columns. Check it out...
 
 
 i18N, POFILES, ETC.
