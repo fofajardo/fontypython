@@ -2,7 +2,6 @@
 
 import wx
 from wx.lib.stattext import GenStaticText
-from wx.lib.stattext import GenStaticText
 
 from random import random
 
@@ -44,6 +43,12 @@ class NavPanel(wx.PyPanel):
 
     def DoGetBestSize(self):
         sz = self.parent.GetSize()
+        w=h=0
+        for itm in self._items:
+            f = itm['gst'].GetFont()
+            sz = f.GetPixelSize()
+            w += sz[0]
+            h += sz[1]
         self.CacheBestSize(sz)
         print sz
         return sz    
@@ -52,6 +57,7 @@ class NavPanel(wx.PyPanel):
         self.SetSize( self.parent.GetSize() )
 
     def _reset(self):
+        self._current_page = self._last_page = 0
         self.hz.Clear(True) # clears fgz too
         #self.fgz.Clear(True)
         del self._items[:] #keeps list defined
@@ -84,7 +90,7 @@ class NavPanel(wx.PyPanel):
         
         #self.gst_prev = GenStaticText(self,self.iid_prev,"<")
         self.gst_prev = self._text(self.iid_prev,"<")
-        self.gst_next = GenStaticText(self,self.iid_next,">")
+        self.gst_next = self._text(self.iid_next,">")
 
         self.hz.Add(self.gst_prev)
         cols = len(itemlist)
@@ -93,7 +99,8 @@ class NavPanel(wx.PyPanel):
         for i in itemlist:
             iid = wx.NewId()
             lbl = unicode(i)
-            gst = GenStaticText(self, iid, lbl)
+            #gst = GenStaticText(self, iid, lbl)
+            gst = self._text(-1, lbl)
             d = {'iid':iid,'gst':gst}
             self._items.append(d)
 
