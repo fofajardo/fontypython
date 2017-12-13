@@ -9,7 +9,7 @@ from random import random
 class PagedEvent(wx.PyCommandEvent):
     def __init__(self, evtType, id):
         wx.PyCommandEvent.__init__(self, evtType,id)
-        self.page = ""
+        self.page = 0
 
 myEVT_PAGED = wx.NewEventType()
 EVT_PAGED = wx.PyEventBinder(myEVT_PAGED,1)
@@ -29,7 +29,7 @@ class NavPanel(wx.PyPanel):
         #self.st = wx.StaticText(self, -1, "test", size = sz )
 
         self._items = []
-        self._last_focus = None
+        self._current_page = self._last_page = 0
 
         self.hz = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -51,18 +51,45 @@ class NavPanel(wx.PyPanel):
     def OnSize(self, evt):
         self.SetSize( self.parent.GetSize() )
 
+    def _reset(self):
+        self.hz.Clear(True) # clears fgz too
+        #self.fgz.Clear(True)
+        del self._items[:] #keeps list defined
+
+    def _text(self,iid,lbl):
+        f = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        f.SetPointSize(16)
+        f.SetWeight(wx.FONTWEIGHT_NORMAL)    
+
+        gst = GenStaticText(self, iid ,lbl)
+        
+        gst.SetFont( f )
+        return gst
+    
+    def _enbold(self,gst):
+        f = gst.GetFont()
+        f.SetWeight(wx.FONTWEIGHT_BOLD)
+        gst.SetFont(f)
+
+    def _unbold(self,gst):
+        f = gst.GetFont()
+        f.SetWeight(wx.FONTWEIGHT_NORMAL)
+        gst.SetFont(f)
 
     def set_list(self, itemlist):
+        print "set_list:", itemlist
         self._reset()
 
         self.fgz = wx.FlexGridSizer(cols = 1, vgap = 0, hgap = 4)
         
-        self.gst_prev = GenStaticText(self,self.iid_prev,"<")
+        #self.gst_prev = GenStaticText(self,self.iid_prev,"<")
+        self.gst_prev = self._text(self.iid_prev,"<")
         self.gst_next = GenStaticText(self,self.iid_next,">")
 
         self.hz.Add(self.gst_prev)
         cols = len(itemlist)
         self.fgz.SetCols(cols)
+        #self._items.append('dud')
         for i in itemlist:
             iid = wx.NewId()
             lbl = unicode(i)
@@ -77,16 +104,25 @@ class NavPanel(wx.PyPanel):
         self.hz.Add(self.fgz)
         self.hz.Add(self.gst_next)
         self.Layout()
-        self.focus_on()
+        self.page_to(1)
 
-    def _reset(self):
-        self.hz.Clear(True) # clears fgz too
-        #self.fgz.Clear(True)
-        del self._items[:] #keeps list defined
-        
-    def focus_on(self,item = 0):
-        gst = self._items[item]['gst']
+
+    
+    def _focus_off(self, item_index):
+        gst = self._items[item_index-1]['gst']
+        gst.SetBackgroundColour('yellow')
+        self._unbold(gst)
+
+    def _focus_on(self, item_index):
+        gst = self._items[item_index-1]['gst']
         gst.SetBackgroundColour('red')
+        self._enbold(gst)
+
+    def page_to(self, item_index):
+        self._focus_off(self._current_page)
+        self._last_page = self._current_page
+        self._current_page = item_index
+        self._focus_on(item_index)
 
 
     def OnMouseEvent(self, e):
@@ -102,19 +138,19 @@ class NavPanel(wx.PyPanel):
             #self.SetFont(self.font1)
         elif e.LeftUp():
             obj = e.GetEventObject()
-            page = obj.GetLabel()
+            page_index = int(obj.GetLabel())
             iid = obj.GetId()
             #print "goes to:", page
-            self.focus_on(int(page))
-            wx.CallAfter(self._page_clicked, page) # execs in the main thread after this event is done.
+            self.page_to( page_index )
+            wx.CallAfter(self._page_clicked, page_index) # execs in the main thread after this event is done.
         else:
             self.SetCursor(wx.NullCursor)
         e.Skip()
 
-    def _page_clicked(self, page):
-        print "call after for:", page
+    def _page_clicked(self, page_index):
+        print "call after for:", page_index
         evt = PagedEvent(myEVT_PAGED, self.GetId()) 
-        evt.page = page
+        evt.page = page_index
         self.GetEventHandler().ProcessEvent(evt)
 
 
@@ -154,13 +190,16 @@ class Example(wx.Frame):
         self.np = pan_bot
         vz.Add(pan_bot,0,wx.EXPAND)
 
+        self.np.set_list(range(1,20))
+
         self.SetSizer(vz)
         self.Layout()
         self.Centre()
         self.Show(True)
 
     def reset_links(self,evt):
-        nl = range(0,int(random()*10)+1)
+        nl = range(1, int(random()*30)+1)
+        nl=[1,]
         self.np.set_list(nl)
         print "reset done"
 
