@@ -43,12 +43,12 @@ class NavPanel(wx.PyPanel):
 
     def DoGetBestSize(self):
         sz = self.parent.GetSize()
-        w=h=0
-        for itm in self._items:
-            f = itm['gst'].GetFont()
-            sz = f.GetPixelSize()
-            w += sz[0]
-            h += sz[1]
+        #w=h=0
+        #for itm in self._items:
+        #    f = itm['gst'].GetFont()
+        #    sz = f.GetPixelSize()
+        #    w += sz[0]
+        #    h += sz[1]
         self.CacheBestSize(sz)
         print sz
         return sz    
