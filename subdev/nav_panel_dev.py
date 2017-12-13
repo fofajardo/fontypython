@@ -2,53 +2,9 @@
 
 import wx
 from wx.lib.stattext import GenStaticText
+from wx.lib.stattext import GenStaticText
 
-
-class Link(GenStaticText):
-
-    def __init__(self, *args, **kw):
-        super(Link, self).__init__(*args, **kw)
-        self.parent = args[0]
-        self.font1 = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, True, 'Verdana')
-        self.font2 = wx.Font(9, wx.SWISS, wx.NORMAL, wx.BOLD, False, 'Verdana')
-
-        self.SetFont(self.font2)
-        self.SetForegroundColour('#0000ff')
-
-        self.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
-        self.Bind(wx.EVT_MOTION, self.OnMouseEvent)
-        self.Bind(wx.EVT_MOUSE_EVENTS, self.parent.OnMouseEvent, self)
-
-    def SetUrl(self, url):
-
-        self.url = url
-
-
-    def OnMouseEvent(self, e):
-
-        if e.Moving():
-
-            self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
-            self.SetFont(self.font1)
-
-        elif e.LeftUp():
-
-            print "goes to:", self.url
-            wx.CallAfter(self.Foo, self)
-            #self.parent.clickypoo(self)
-
-        else:
-            self.SetCursor(wx.NullCursor)
-            self.SetFont(self.font2)
-        print "e ends"
-        e.Skip()
-
-    def Foo(self,obj):
-      print "call after for:", obj
-      obj.Destroy()
-
-
-
+from random import random
 
 class PagedEvent(wx.PyCommandEvent):
     def __init__(self, evtType, id):
@@ -58,8 +14,6 @@ class PagedEvent(wx.PyCommandEvent):
 myEVT_PAGED = wx.NewEventType()
 EVT_PAGED = wx.PyEventBinder(myEVT_PAGED,1)
 
-
-from wx.lib.stattext import GenStaticText
 
 class NavPanel(wx.PyPanel):
     def __init__(self, parent, id):
@@ -133,7 +87,6 @@ class NavPanel(wx.PyPanel):
 
     def OnMouseEvent(self, e):
         """
-
 <wx._core.MouseEvent; proxy of <Swig Object of type 'wxMouseEvent *' at 0x7ffd1d217d40> >
 ['AltDown', 'Aux1DClick', 'Aux1Down', 'Aux1IsDown', 'Aux1Up', 'Aux2DClick', 'Aux2Down', 'Aux2IsDown', 'Aux2Up', 'Button', 'ButtonDClick', 'ButtonDown', 'ButtonIsDown', 'ButtonUp', 'ClassName', 'Clone', 'CmdDown', 'ControlDown', 'Destroy', 'DidntHonourProcessOnlyIn', 'Dragging', 'Entering', 'EventObject', 'EventType', 'GetButton', 'GetClassName', 'GetClickCount', 'GetEventCategory', 'GetEventObject', 'GetEventType', 'GetId', 'GetLinesPerAction', 'GetLogicalPosition', 'GetModifiers', 'GetPosition', 'GetPositionTuple', 'GetSkipped', 'GetTimestamp', 'GetWheelAxis', 'GetWheelDelta', 'GetWheelRotation', 'GetX', 'GetY', 'HasModifiers', 'Id', 'IsButton', 'IsCommandEvent', 'IsPageScroll', 'IsSameAs', 'Leaving', 'LeftDClick', 'LeftDown', 'LeftIsDown', 'LeftUp', 'LinesPerAction', 'LogicalPosition', 'MetaDown', 'MiddleDClick', 'MiddleDown', 'MiddleIsDown', 'MiddleUp', 'Modifiers', 'Moving', 'Position', 'RawControlDown', 'ResumePropagation', 'RightDClick', 'RightDown', 'RightIsDown', 'RightUp', 'SetAltDown', 'SetAux1Down', 'SetAux2Down', 'SetControlDown', 'SetEventObject', 'SetEventType', 'SetId', 'SetLeftDown', 'SetMetaDown', 'SetMiddleDown', 'SetPosition', 'SetRawControlDown', 'SetRightDown', 'SetShiftDown', 'SetState', 'SetTimestamp', 'SetX', 'SetY', 'ShiftDown', 'ShouldProcessOnlyIn', 'ShouldPropagate', 'Skip', 'Skipped', 'StopPropagation', 'Timestamp', 'WasProcessed', 'WheelDelta', 'WheelRotation', 'X', 'Y', '__class__', '__del__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__swig_destroy__', '__weakref__', 'altDown', 'aux1IsDown', 'aux2IsDown', 'cmdDown', 'controlDown', 'leftIsDown', 'm_altDown', 'm_aux1Down', 'm_aux2Down', 'm_controlDown', 'm_leftDown', 'm_metaDown', 'm_middleDown', 'm_rightDown', 'm_shiftDown', 'm_x', 'm_y', 'metaDown', 'middleIsDown', 'rawControlDown', 'rightIsDown', 'shiftDown', 'this', 'thisown', 'x', 'y']
         """
@@ -148,7 +101,7 @@ class NavPanel(wx.PyPanel):
             page = obj.GetLabel()
             iid = obj.GetId()
             #print "goes to:", page
-            wx.CallAfter(self._page_clicked, page)
+            wx.CallAfter(self._page_clicked, page) # execs in the main thread after this event is done.
         else:
             self.SetCursor(wx.NullCursor)
         e.Skip()
@@ -161,7 +114,6 @@ class NavPanel(wx.PyPanel):
 
 
 
-from random import random
 
 class Example(wx.Frame):
 
@@ -197,8 +149,6 @@ class Example(wx.Frame):
         self.np = pan_bot
         vz.Add(pan_bot,0,wx.EXPAND)
 
-        #CPU(self,-1)
-        #cpu.addPages(10)
         self.SetSizer(vz)
         self.Layout()
         self.Centre()
