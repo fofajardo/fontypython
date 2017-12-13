@@ -29,7 +29,8 @@ class NavPanel(wx.PyPanel):
         #self.st = wx.StaticText(self, -1, "test", size = sz )
 
         self._items = []
-        
+        self._last_focus = None
+
         self.hz = wx.BoxSizer(wx.HORIZONTAL)
 
         self.iid_prev = wx.NewId()
@@ -76,14 +77,17 @@ class NavPanel(wx.PyPanel):
         self.hz.Add(self.fgz)
         self.hz.Add(self.gst_next)
         self.Layout()
+        self.focus_on()
 
     def _reset(self):
         self.hz.Clear(True) # clears fgz too
         #self.fgz.Clear(True)
         del self._items[:] #keeps list defined
         
-    def goto_item(self,item):
-        pass
+    def focus_on(self,item = 0):
+        gst = self._items[item]['gst']
+        gst.SetBackgroundColour('red')
+
 
     def OnMouseEvent(self, e):
         """
@@ -101,6 +105,7 @@ class NavPanel(wx.PyPanel):
             page = obj.GetLabel()
             iid = obj.GetId()
             #print "goes to:", page
+            self.focus_on(int(page))
             wx.CallAfter(self._page_clicked, page) # execs in the main thread after this event is done.
         else:
             self.SetCursor(wx.NullCursor)
