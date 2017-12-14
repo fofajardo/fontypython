@@ -39,9 +39,15 @@ class NavPanel(wx.PyPanel):
         self.SetSizer(self.hz)
 
         self.Bind(wx.EVT_SIZE, self.OnSize)    
-
+        
+        f = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        self.ps = 14
+        f.SetPointSize(self.ps)
+        self.tile_size = f.GetPixelSize()
+        
 
     def DoGetBestSize(self):
+        #print "GBS"
         sz = self.parent.GetSize()
         #w=h=0
         #for itm in self._items:
@@ -50,7 +56,7 @@ class NavPanel(wx.PyPanel):
         #    w += sz[0]
         #    h += sz[1]
         self.CacheBestSize(sz)
-        print sz
+        #print sz
         return sz    
 
     def OnSize(self, evt):
@@ -64,7 +70,7 @@ class NavPanel(wx.PyPanel):
 
     def _text(self,iid,lbl):
         f = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        f.SetPointSize(16)
+        f.SetPointSize(self.ps)
         f.SetWeight(wx.FONTWEIGHT_NORMAL)    
 
         gst = GenStaticText(self, iid ,lbl)
@@ -85,6 +91,25 @@ class NavPanel(wx.PyPanel):
     def set_list(self, itemlist):
         print "set_list:", itemlist
         self._reset()
+
+
+        pansz = self.GetSize()
+        panw = pansz[0]
+        print "panw:",panw
+
+        L = len(itemlist)
+        listw = L * (self.tile_size[0]+4) + (2*(self.tile_size[0]+4))
+        print "listw:", listw
+
+        if listw > panw:
+            #how much of list can fit in panw?
+            d = listw - panw
+            overtiles = d / self.tile_size[0]
+            oktiles = panw / self.tile_size[0]
+            print overtiles
+            print oktiles
+            print
+
 
         self.fgz = wx.FlexGridSizer(cols = 1, vgap = 0, hgap = 4)
         
@@ -111,6 +136,7 @@ class NavPanel(wx.PyPanel):
         self.hz.Add(self.fgz)
         self.hz.Add(self.gst_next)
         self.Layout()
+        print "size of hz:", self.hz.GetSize()
         self.page_to(1)
 
 
@@ -205,8 +231,8 @@ class Example(wx.Frame):
         self.Show(True)
 
     def reset_links(self,evt):
-        nl = range(1, int(random()*30)+1)
-        nl=[1,]
+        nl = range(1, 50)#int(random()*30)+1)
+        #nl=[1,]
         self.np.set_list(nl)
         print "reset done"
 
