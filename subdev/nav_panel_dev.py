@@ -44,7 +44,16 @@ class NavPanel(wx.PyPanel):
         self.ps = 14
         f.SetPointSize(self.ps)
         self.tile_size = f.GetPixelSize()
-        
+
+    def _chooser(self):
+        ## The pager pulldown
+        #pager_label = fpwx.label(self, _(u"Page:"))
+        self.pager_combo = wx.ComboBox(self, -1,
+                value="1", choices=["busy"],
+                style = wx.CB_DROPDOWN | wx.TE_PROCESS_ENTER )
+
+        self.pager_combo.Bind(wx.EVT_COMBOBOX, self.onPagechoiceClick )
+        self.pager_combo.Bind(wx.EVT_TEXT_ENTER, self.onPagerChoiceTextEnter )        
 
     def DoGetBestSize(self):
         #print "GBS"
@@ -62,11 +71,10 @@ class NavPanel(wx.PyPanel):
     def OnSize(self, evt):
         self.SetSize( self.parent.GetSize() )
 
-    def _reset(self):
-        self._current_page = self._last_page = 0
-        self.hz.Clear(True) # clears fgz too
-        #self.fgz.Clear(True)
-        del self._items[:] #keeps list defined
+    #def _reset(self):
+    #    self._current_page = self._last_page = 0
+    #    self.hz.Clear(True)
+    #    del self._items[:] #keeps list defined
 
     def _text(self,iid,lbl):
         f = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -88,20 +96,29 @@ class NavPanel(wx.PyPanel):
         f.SetWeight(wx.FONTWEIGHT_NORMAL)
         gst.SetFont(f)
 
-    def set_list(self, itemlist):
-        print "set_list:", itemlist
-        self._reset()
+    def set_list(self, numrange = None):
+        if not numrange: 
+            numrange = self._numrange
+            to_pg = self._current_page
+            #self._current_page = self._last_page = 0
+        else:
+            #self._reset()
+            self._current_page = self._last_page = 0
+            to_pg = 1
 
+        #self.hz.Clear(True)
+        self._numrange = numrange
+        #self._items[:] #keeps list defined        
 
-        pansz = self.GetSize()
-        panw = pansz[0]
-        print "panw:",panw
+        #pansz = self.GetSize()
+        #panw = pansz[0]
+        #print "panw:",panw
 
-        L = len(itemlist)
-        listw = L * (self.tile_size[0]+4) + (2*(self.tile_size[0]+4))
-        print "listw:", listw
+        #L = len(numrange)
+        #listw = L * (self.tile_size[0]+4) + (2*(self.tile_size[0]+4))
+        #print "listw:", listw
 
-        if listw > panw:
+        if False: #listw > panw:
             #how much of list can fit in panw?
             d = listw - panw
             overtiles = d / self.tile_size[0]
@@ -111,17 +128,27 @@ class NavPanel(wx.PyPanel):
             print
 
 
-        self.fgz = wx.FlexGridSizer(cols = 1, vgap = 0, hgap = 4)
-        
+        fgz = self._draw_the_numbers(numrange)
+         
         #self.gst_prev = GenStaticText(self,self.iid_prev,"<")
         self.gst_prev = self._text(self.iid_prev,"<")
         self.gst_next = self._text(self.iid_next,">")
 
         self.hz.Add(self.gst_prev)
-        cols = len(itemlist)
-        self.fgz.SetCols(cols)
+        self.hz.Add(fgz)
+        self.hz.Add(self.gst_next)
+        self.Layout()
+        print "size of hz:", self.hz.GetSize()
+        self.select_page_number(to_pg)
+
+    def _draw_the_numbers(self,numrange):#start,end):
+        self.hz.Clear(True)
+        del self._items[:] #keeps list defined        
+        fgs = wx.FlexGridSizer(cols = 1, vgap = 0, hgap = 4)
+        cols = len(numrange)
+        fgs.SetCols(cols)
         #self._items.append('dud')
-        for i in itemlist:
+        for i in numrange:
             iid = wx.NewId()
             lbl = unicode(i)
             #gst = GenStaticText(self, iid, lbl)
@@ -132,14 +159,8 @@ class NavPanel(wx.PyPanel):
             gst.Bind(wx.EVT_MOUSE_EVENTS, self.OnMouseEvent)
             #gst.Bind(wx.EVT_MOTION, self.OnMouseEvent)
 
-            self.fgz.Add(gst,0,wx.EXPAND)
-        self.hz.Add(self.fgz)
-        self.hz.Add(self.gst_next)
-        self.Layout()
-        print "size of hz:", self.hz.GetSize()
-        self.page_to(1)
-
-
+            fgs.Add(gst,0,wx.EXPAND)
+        return fgs
     
     def _focus_off(self, item_index):
         gst = self._items[item_index-1]['gst']
@@ -151,7 +172,7 @@ class NavPanel(wx.PyPanel):
         gst.SetBackgroundColour('red')
         self._enbold(gst)
 
-    def page_to(self, item_index):
+    def select_page_number(self, item_index):
         self._focus_off(self._current_page)
         self._last_page = self._current_page
         self._current_page = item_index
@@ -159,10 +180,7 @@ class NavPanel(wx.PyPanel):
 
 
     def OnMouseEvent(self, e):
-        """
-<wx._core.MouseEvent; proxy of <Swig Object of type 'wxMouseEvent *' at 0x7ffd1d217d40> >
-['AltDown', 'Aux1DClick', 'Aux1Down', 'Aux1IsDown', 'Aux1Up', 'Aux2DClick', 'Aux2Down', 'Aux2IsDown', 'Aux2Up', 'Button', 'ButtonDClick', 'ButtonDown', 'ButtonIsDown', 'ButtonUp', 'ClassName', 'Clone', 'CmdDown', 'ControlDown', 'Destroy', 'DidntHonourProcessOnlyIn', 'Dragging', 'Entering', 'EventObject', 'EventType', 'GetButton', 'GetClassName', 'GetClickCount', 'GetEventCategory', 'GetEventObject', 'GetEventType', 'GetId', 'GetLinesPerAction', 'GetLogicalPosition', 'GetModifiers', 'GetPosition', 'GetPositionTuple', 'GetSkipped', 'GetTimestamp', 'GetWheelAxis', 'GetWheelDelta', 'GetWheelRotation', 'GetX', 'GetY', 'HasModifiers', 'Id', 'IsButton', 'IsCommandEvent', 'IsPageScroll', 'IsSameAs', 'Leaving', 'LeftDClick', 'LeftDown', 'LeftIsDown', 'LeftUp', 'LinesPerAction', 'LogicalPosition', 'MetaDown', 'MiddleDClick', 'MiddleDown', 'MiddleIsDown', 'MiddleUp', 'Modifiers', 'Moving', 'Position', 'RawControlDown', 'ResumePropagation', 'RightDClick', 'RightDown', 'RightIsDown', 'RightUp', 'SetAltDown', 'SetAux1Down', 'SetAux2Down', 'SetControlDown', 'SetEventObject', 'SetEventType', 'SetId', 'SetLeftDown', 'SetMetaDown', 'SetMiddleDown', 'SetPosition', 'SetRawControlDown', 'SetRightDown', 'SetShiftDown', 'SetState', 'SetTimestamp', 'SetX', 'SetY', 'ShiftDown', 'ShouldProcessOnlyIn', 'ShouldPropagate', 'Skip', 'Skipped', 'StopPropagation', 'Timestamp', 'WasProcessed', 'WheelDelta', 'WheelRotation', 'X', 'Y', '__class__', '__del__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__swig_destroy__', '__weakref__', 'altDown', 'aux1IsDown', 'aux2IsDown', 'cmdDown', 'controlDown', 'leftIsDown', 'm_altDown', 'm_aux1Down', 'm_aux2Down', 'm_controlDown', 'm_leftDown', 'm_metaDown', 'm_middleDown', 'm_rightDown', 'm_shiftDown', 'm_x', 'm_y', 'metaDown', 'middleIsDown', 'rawControlDown', 'rightIsDown', 'shiftDown', 'this', 'thisown', 'x', 'y']
-        """
+
         #print dir(e)
         #print e.GetEventObject().GetLabel()
         if e.Moving():
@@ -174,7 +192,7 @@ class NavPanel(wx.PyPanel):
             page_index = int(obj.GetLabel())
             iid = obj.GetId()
             #print "goes to:", page
-            self.page_to( page_index )
+            self.select_page_number( page_index )
             wx.CallAfter(self._page_clicked, page_index) # execs in the main thread after this event is done.
         else:
             self.SetCursor(wx.NullCursor)
@@ -185,8 +203,10 @@ class NavPanel(wx.PyPanel):
         evt = PagedEvent(myEVT_PAGED, self.GetId()) 
         evt.page = page_index
         self.GetEventHandler().ProcessEvent(evt)
+        self.set_list()
 
-
+#for kid in self.fitmap_sizer.GetChildren():
+#    fitmap = kid.GetWindow() #is the fitmap within
 
 
 class Example(wx.Frame):
@@ -223,7 +243,7 @@ class Example(wx.Frame):
         self.np = pan_bot
         vz.Add(pan_bot,0,wx.EXPAND)
 
-        self.np.set_list(range(1,20))
+        self.np.set_list(xrange(1,21))
 
         self.SetSizer(vz)
         self.Layout()
@@ -248,3 +268,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+rem = """<wx._core.MouseEvent; proxy of <Swig Object of type 'wxMouseEvent *' at 0x7ffd1d217d40> >
+['AltDown', 'Aux1DClick', 'Aux1Down', 'Aux1IsDown', 'Aux1Up', 'Aux2DClick', 'Aux2Down', 'Aux2IsDown', 'Aux2Up', 'Button', 'ButtonDClick', 'ButtonDown', 'ButtonIsDown', 'ButtonUp', 'ClassName', 'Clone', 'CmdDown', 'ControlDown', 'Destroy', 'DidntHonourProcessOnlyIn', 'Dragging', 'Entering', 'EventObject', 'EventType', 'GetButton', 'GetClassName', 'GetClickCount', 'GetEventCategory', 'GetEventObject', 'GetEventType', 'GetId', 'GetLinesPerAction', 'GetLogicalPosition', 'GetModifiers', 'GetPosition', 'GetPositionTuple', 'GetSkipped', 'GetTimestamp', 'GetWheelAxis', 'GetWheelDelta', 'GetWheelRotation', 'GetX', 'GetY', 'HasModifiers', 'Id', 'IsButton', 'IsCommandEvent', 'IsPageScroll', 'IsSameAs', 'Leaving', 'LeftDClick', 'LeftDown', 'LeftIsDown', 'LeftUp', 'LinesPerAction', 'LogicalPosition', 'MetaDown', 'MiddleDClick', 'MiddleDown', 'MiddleIsDown', 'MiddleUp', 'Modifiers', 'Moving', 'Position', 'RawControlDown', 'ResumePropagation', 'RightDClick', 'RightDown', 'RightIsDown', 'RightUp', 'SetAltDown', 'SetAux1Down', 'SetAux2Down', 'SetControlDown', 'SetEventObject', 'SetEventType', 'SetId', 'SetLeftDown', 'SetMetaDown', 'SetMiddleDown', 'SetPosition', 'SetRawControlDown', 'SetRightDown', 'SetShiftDown', 'SetState', 'SetTimestamp', 'SetX', 'SetY', 'ShiftDown', 'ShouldProcessOnlyIn', 'ShouldPropagate', 'Skip', 'Skipped', 'StopPropagation', 'Timestamp', 'WasProcessed', 'WheelDelta', 'WheelRotation', 'X', 'Y', '__class__', '__del__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__swig_destroy__', '__weakref__', 'altDown', 'aux1IsDown', 'aux2IsDown', 'cmdDown', 'controlDown', 'leftIsDown', 'm_altDown', 'm_aux1Down', 'm_aux2Down', 'm_controlDown', 'm_leftDown', 'm_metaDown', 'm_middleDown', 'm_rightDown', 'm_shiftDown', 'm_x', 'm_y', 'metaDown', 'middleIsDown', 'rawControlDown', 'rightIsDown', 'shiftDown', 'this', 'thisown', 'x', 'y']
+        """
