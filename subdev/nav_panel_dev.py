@@ -112,30 +112,23 @@ class NavPanel(wx.PyPanel):
         # seems to happen on the various Set... calls
         pass
 
-    def set_list(self, n):#numrange = None):
-        if not n: 
-            print "set_list no n"
-            n = self._n
-            to_pg = self._current_page
-            #self._current_page = self._last_page = 0
-        else:
-            print "set_list with n"
-            #self._reset()
-            self._current_page = self._last_page = 1
-            to_pg = 1
-
-        self._n = n
+    def set_list(self, tot_num_pages, starting_page = 1):#numrange = None):
+        self._current_page = self._last_page = starting_page
 
         self.hz.Remove(1)
 
-        #fgz = self._draw_the_numbers(numrange)
-        fgz = self.abbr_pages(n,to_pg)
+        for pgnum, gst in self._items.iteritems():
+            gst.Unbind(wx.EVT_MOUSE_EVENTS)
+            gst.Destroy()
+        self._items.clear()
+
+        fgz = self.abbr_pages( tot_num_pages, starting_page)
 
         self.hz.Insert(1,fgz,0)
 
         self.Layout()
-        print "size of hz:", self.hz.GetSize()
-        self.select_page_number(to_pg)
+        #print "size of hz:", self.hz.GetSize()
+        self.select_page_number( starting_page )
 
 
 
@@ -156,13 +149,44 @@ class NavPanel(wx.PyPanel):
         assert(0 < n)
         assert(0 < page <= n)
 
-        # Build set of pages to display
-        if n <= 10:
-            pages = set(range(1, n + 1))
-        else:
-            pages = (set(range(1, 4))
-                     | set(range(max(1, page - 2), min(page + 3, n + 1)))
-                     | set(range(n - 2, n + 1)))
+        def build_pages_1():
+            # Build set of pages to display
+            if n <= 10:
+                pages = set(range(1, n + 1))
+            else:
+                pages = (set(
+                             range(1, 4)
+                             )
+                         | set( 
+                             range( max(1, page - 2), min(page + 3, n + 1) )
+                             )
+                         | set(
+                             range(n - 2, n + 1)
+                             )
+                         )
+            return pages
+
+        def build_pages_2():
+            # Build set of pages to display
+            if n <= 10:
+                pages = set(range(1, n + 1))
+            else:
+                pages = (set(
+                             range(1, 4)
+                             )
+                         | set( 
+                             range( max(1, page - 2), min(page + 3, n + 1) )
+                             )
+                         | set(
+                             range(n - 2, n + 1)
+                             )
+                         )
+            return pages
+
+        print "measure w:", self.GetSize()
+        pages = build_pages_2()
+
+        print pages
 
         # Display pages in order with ellipses
         def display():
@@ -177,10 +201,6 @@ class NavPanel(wx.PyPanel):
         for pg in display(): 
             pgs.append(pg)
 
-        for pgnum, gst in self._items.iteritems():
-            gst.Unbind(wx.EVT_MOUSE_EVENTS)
-            gst.Destroy()
-        self._items.clear()
 
         fgs = wx.FlexGridSizer(cols = 1, vgap = 0, hgap = 4)
         cols = len(pgs)
@@ -287,7 +307,7 @@ class Example(wx.Frame):
     def reset_links(self,evt):
         nl = 500# range(1, 50)#int(random()*30)+1)
         #nl=[1,]
-        self.np.set_list(nl)
+        self.np.set_list(nl, starting_page = 450)
         print "reset done"
         for kid in self.np.GetChildren():
             print kid
