@@ -145,11 +145,32 @@ class NavPanel(wx.PyPanel):
         '[1] 2 3 ... 18 19 20'
         >>> abbreviated_pages(80, 30)
         '1 2 3 ... 28 29 [30] 31 32 ... 78 79 80'
+
+
+
+>>> import math
+>>> d = int(math.log10(12))+1
+>>> d
+2
+>>> l=[1,2,3,4,5,6,7,8,9,10,11]
+>>> d = int(math.log10(11))+1
+>>> d
+2
+>>> d = int(math.log10(10))+1
+>>> d
+2
+>>> int(math.log10(9))+1
+1
+>>> [int(math.log10(n))+1 for n in l]
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2]
+>>> sum([int(math.log10(n))+1 for n in l])
+13
+>>> 
         """
         assert(0 < n)
         assert(0 < page <= n)
 
-        def build_pages_1():
+        def build_pages_1(n,page):
             # Build set of pages to display
             if n <= 10:
                 pages = set(range(1, n + 1))
@@ -166,25 +187,27 @@ class NavPanel(wx.PyPanel):
                          )
             return pages
 
-        def build_pages_2():
+        def build_pages_2(n, page):
             # Build set of pages to display
-            if n <= 10:
+            foo = 10
+            if n <= foo:
                 pages = set(range(1, n + 1))
             else:
+                foof = foo/3
                 pages = (set(
-                             range(1, 4)
+                             range(1, foof)
                              )
                          | set( 
-                             range( max(1, page - 2), min(page + 3, n + 1) )
+                             range( max(1, page - 2), min(page + foof, n + 1) )
                              )
                          | set(
-                             range(n - 2, n + 1)
+                             range(n - foof, n + 1)
                              )
                          )
             return pages
 
         print "measure w:", self.GetSize()
-        pages = build_pages_2()
+        pages = build_pages_2( n, page)
 
         print pages
 
