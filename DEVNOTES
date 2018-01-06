@@ -4,15 +4,13 @@ It's 25 Nov 2017. I am not well. Today my PC did not want to boot. I have told i
 
 If Fonty dev just stops, that will be why.
 
-The active branch called "layoutchange" is the latest fonty. It's very close to working. Last I left it, I was experimenting with control layouts under the font view. This will change as I continue to hack. I probably won't be able to keep this file up to date.
-
 I am stuck on Python 2.x because wxPython has not released their new version on Linux. It seems they are actually disinterested in Linux. I hope wxPython 4 comes to a distro near you soon. It's a bloody great framework.
 
 If I can, assuming the best, I will finish this new version soon and get it out. I intend to try python-gobject gtk, what a nightmare, but I have zero confidence that I can move Fonty to Gtk. Whatever I do will take several years anyway. If I have several years.
 
 So, good luck. She runs. The transaltions are all broken (because I fucked with the strings so much) and I don't know if the setup procedure is working.
 
-
+Update, merged back into trunk. 
 Update, Dec 3, 2017. I've done a lot more stuff. Still not ready to release yet. I hope to before 2018.
 Update, Dec 8. Worked like a dog. Got a tarball 0.5 released. There's some problem with ssh on Savannah, but the file is up. I have sent mail to FichteFoll and Michael Hoeft. Sent email to Pietro too, this morning. No reports yet.
 
@@ -95,6 +93,26 @@ Done * Don't forget to remove the wx debug stuff on the app object
 * Change all the strings to use {} and params
 
 * Remove a font from a Pog - the fontview loses its columns. Check it out...
+
+
+* Suggestions from Michael (Jan 2018)
+
+If you allow, I will make two suggestions:
+
+- add "wx.BORDER_NONE" in the wxgui.py at wx.Frame.__init__(....).
+
+- The toggling between "source folders" and "source pogs" clears the selection
+  in the folder treeview, but not in the pog list. So if you select a pog the
+  font view changes to this pog. Then select a folder and the font view changes
+  to the fonts in this folder. Now go back to the "source pogs", the last pog is
+  still selected and marked as "viewing", but the font view still shows the last
+  folder. Click the select pog again don't brings up the fonts of this pog. You
+  need to select an other pog and than reselect the old pog. It may be better to
+  deselect the selected pog and remove the viewing icon by toggling the source.
+  Or bring up directly the selected pog by toggling to the "source pog" tab.
+
+
+
 
 
 i18N, POFILES, ETC.

@@ -166,6 +166,20 @@ class NavPanel(wx.PyPanel):
 >>> sum([int(math.log10(n))+1 for n in l])
 13
 >>> 
+
+or
+count = 0
+number = int(input("Enter a number "))
+
+while (number > 0):
+	number = number//10
+	count = count + 1
+
+print ("Total number of digits : ",count)
+
+
+
+
         """
         assert(0 < n)
         assert(0 < page <= n)
@@ -193,23 +207,30 @@ class NavPanel(wx.PyPanel):
             if n <= foo:
                 pages = set(range(1, n + 1))
             else:
-                foof = foo/3
+                foof = 15/3
                 pages = (set(
                              range(1, foof)
                              )
                          | set( 
-                             range( max(1, page - 2), min(page + foof, n + 1) )
+                             range( max(1, page - (foof/2)), min(page + foof-1, n + 1) )
                              )
                          | set(
-                             range(n - foof, n + 1)
+                             range(n - foof/2, n + 1)
                              )
                          )
+            print sorted(pages)
+            print foof
+            # tote the digits up. get a width
+            # is it too wide? yes - redo to a more basic shape:
+            # << < n-4 n-3 n-2 n-1 n n+1 > >>
+            # maybe?
+            # or run it through with smaller foofs..
+
             return pages
 
         print "measure w:", self.GetSize()
         pages = build_pages_2( n, page)
 
-        print pages
 
         # Display pages in order with ellipses
         def display():
@@ -332,8 +353,8 @@ class Example(wx.Frame):
         #nl=[1,]
         self.np.set_list(nl, starting_page = 450)
         print "reset done"
-        for kid in self.np.GetChildren():
-            print kid
+        #for kid in self.np.GetChildren():
+        #    print kid
             #    fitmap = kid.GetWindow() #is the fitmap within
 
     def paged(self,evt):
