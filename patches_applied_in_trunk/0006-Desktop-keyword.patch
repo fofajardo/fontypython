@@ -1,0 +1,13 @@
+Description: Add Keywords entry to .desktop file.
+diff --git a/fontypython.desktop b/fontypython.desktop
+index 6e74b39..f25496f 100644
+--- a/fontypython.desktop
++++ b/fontypython.desktop
+@@ -8,6 +8,7 @@ Comment[it]=Vedi e installa temporaneamente tutti i tipi di font
+ 
+ Type=Application
+ Categories=Graphics;
++Keywords=fonts;viewer;graphics
+ 
+ Exec=fontypython
+ TryExec=fontypython
