@@ -199,7 +199,7 @@ fc-list : file | grep donn
 
 
 
-XGD info
+XDG info
 ==
 There's a movement to standard desktop ideas. One of the is to use a standard config, data and cache directory system.
 Here's what I did in a python console:

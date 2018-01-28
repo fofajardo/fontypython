@@ -1,3 +1,5 @@
+COMPARE THIS FILE TO 0.5's SETUP. I FOUND BUGS in Jan 2018
+
 #!/usr/bin/env python
 
 ##  Fonty Python Copyright (C) 2006,2007,2008,2009,2017 Donn.C.Ingle
@@ -189,8 +191,8 @@ icons = ['32x32', '48x48', '64x64', 'scalable']
 for i in icons:
     _to      = targetpaf.format(i)
     _from    = frompaf.format(i)
-    _iconpaf = opj(_from,'fontypython.{}')
-    _iconpaf = _icon.format( 'svg' if i == 'scalable' else 'png' )
+    _icon = opj(_from,'fontypython.{}')
+    _icon = _icon.format( 'svg' if i == 'scalable' else 'png' )
     files.append( ( _to, [_iconpaf] ) )
 files.append( ('/usr/share/applications',['fontypython.desktop']) )
 #files.append( ('/usr/share/pixmaps',['fontypython.png']) )

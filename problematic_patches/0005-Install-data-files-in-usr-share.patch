@@ -1,0 +1,53 @@
+Description: Install data files in /usr/share
+Author: Pietro Battiston <me@pietrobattiston.it>
+diff --git a/fontypythonmodules/fpsys.py b/fontypythonmodules/fpsys.py
+index 5bf8ecf..5a2bf38 100644
+--- a/fontypythonmodules/fpsys.py
++++ b/fontypythonmodules/fpsys.py
+@@ -1079,8 +1079,7 @@ if os.path.islink(root):
+ fontyroot = os.path.dirname(os.path.abspath(root))
+ 
+ ## Where my images and things are.
+-mythingsdir = os.path.join(fontyroot,"things/")
+-
++mythingsdir = os.path.join(sys.prefix, 'share', 'fontypython', 'things') + '/'
+ 
+ ## Instance the Overlaperizer (once)
+ Overlap = Overlaperize()
+diff --git a/fontypythonmodules/gui_dismissable_panels.py b/fontypythonmodules/gui_dismissable_panels.py
+index ca2f1b0..ccbcd2d 100644
+--- a/fontypythonmodules/gui_dismissable_panels.py
++++ b/fontypythonmodules/gui_dismissable_panels.py
+@@ -246,7 +246,7 @@ class HelpPanel(DismissableHTMLPanel):
+         else:
+             langcode = loc[:2].lower()# May cause bugs
+         ## Find localized help, or default to English.
+-        packpath = fpsys.fontyroot
++        packpath = os.path.join('/usr/share', 'fontypython')
+         helppaf = os.path.join(packpath, "help", langcode, "help.html")
+         if not os.path.exists( helppaf ):
+             helppaf = os.path.join(packpath, "help", "en", "help.html")
+@@ -312,7 +312,7 @@ class AboutPanel(DismissableHTMLPanel):
+                 someicon="fplogo") 
+ 
+     def post_init_set_paf(self):
+-        packpath = fpsys.fontyroot
++        packpath = os.path.join('/usr/share', 'fontypython')
+         return os.path.join(packpath, "about", "about.html")
+ 
+     def post_init_setup_replace_dict(self):
+diff --git a/setup.py b/setup.py
+index 42babef..ba5a095 100644
+--- a/setup.py
++++ b/setup.py
+@@ -195,6 +195,10 @@ for i in icons:
+ files.append( ('/usr/share/applications',['fontypython.desktop']) )
+ #files.append( ('/usr/share/pixmaps',['fontypython.png']) )
+ 
++for a_dir in ('things', 'help/common', 'help/en'):
++    files.append( ('/usr/share/fontypython/%s' % a_dir,
++                   glob.glob('fontypythonmodules/%s/*' % a_dir)) )
++
+ # Leave the man page up to Kartik.
+ # files.append( ('/usr/share/man/man1',['fontypython.1']) )
+ 

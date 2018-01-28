@@ -109,6 +109,7 @@ Fonty Python depends on several other libraries:
 2. python-dev (odd one this. See notes below)
 3. python-pil (The "Pillow" module has replaced the old PIL one.)
 4. python-wxgtk3.0 (Not 4.x, which is unreleased.)
+5. python-gi (python and GLib)
 
 Items 1 and 3 are usually pre-installed on Gnu\Linux distros.
 

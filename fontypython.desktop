@@ -8,6 +8,7 @@ Comment[it]=Vedi e installa temporaneamente tutti i tipi di font
 
 Type=Application
 Categories=Graphics;
+Keywords=fonts;viewer;graphics
 
 Exec=fontypython
 TryExec=fontypython
